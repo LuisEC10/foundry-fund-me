@@ -6,17 +6,21 @@ import {Script} from "forge-std/Script.sol";
 import {FundMe} from "../src/FundeMe.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
 
-contract DeployFundMe is Script{
-  function run() external returns (FundMe) {
-    // Before startBroadcast -> Not a "reasl" txt 
-    // mock
-    HelperConfig helperConfig = new HelperConfig();
-    address ethUsdPriceFeed = helperConfig.activeNetworkConfig();
+contract DeployFundMe is Script {
+    function deployFundMe() public returns (FundMe) {
+        // Before startBroadcast -> Not a "reasl" txt
+        // mock
+        HelperConfig helperConfig = new HelperConfig();
+        address ethUsdPriceFeed = helperConfig.activeNetworkConfig();
 
-    // After startBroadcast -> Real tx
-    vm.startBroadcast();
-    FundMe fundMe = new FundMe(ethUsdPriceFeed);
-    vm.stopBroadcast();
-    return fundMe;
-  }
+        // After startBroadcast -> Real tx
+        vm.startBroadcast();
+        FundMe fundMe = new FundMe(ethUsdPriceFeed);
+        vm.stopBroadcast();
+        return fundMe;
+    }
+
+    function run() external returns (FundMe) {
+      return deployFundMe();
+    }
 }
